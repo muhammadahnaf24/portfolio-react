@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", sans-serif;
+
+  /* --- PALET WARNA (Updated) --- */
+  
+  /* Background & Surface TETAP (Dark Mode) */
+  --color-background: #0a0a0a; 
+  --color-surface: #171717;    
+  --color-text-main: #d4d4d4;  
+
+  /* GANTI INI: Dari Oren ke Hijau Emerald */
+  --color-accent: #10b981;     /* Emerald 500 */
+}
+
+@layer base {
+  html, body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    color: var(--color-text-main);
+
+    scroll-behavior: smooth;
+  }
+}
