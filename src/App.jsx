@@ -15,7 +15,7 @@ const App = () => {
         <Projects />
         <Contact />
       </main>
-      <Footer /> {/* 👈 Pasang Footer di sini */}
+      <Footer /> 
     </div>
   );
 };

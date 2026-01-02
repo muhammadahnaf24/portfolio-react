@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-// 👇 PENTING: Ganti 'profile.png' sesuai nama file fotomu di folder assets/images
 import profileImg from "../assets/hero.png";
 
 // Variabel animasi untuk teks agar muncul berurutan (staggered)
@@ -92,7 +91,6 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* === KOLOM KANAN: FOTO PROFIL (SIMPLE VERSION) === */}
         <motion.div
           // Animasi Masuk (Entrance) tetap ada agar halus
           initial={{ opacity: 0, scale: 1 }}
