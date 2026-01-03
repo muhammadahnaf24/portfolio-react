@@ -28,7 +28,7 @@ const Contact = () => {
         </h2>
 
         {/* Paragraf Ajakan */}
-        <p className="text-gray-400 text-lg leading-relaxed mb-10">
+        <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-10">
           Saya saat ini sedang terbuka untuk peluang baru, baik itu proyek
           freelance maupun full-time. Punya pertanyaan atau sekadar ingin
           menyapa? Inbox saya selalu terbuka!

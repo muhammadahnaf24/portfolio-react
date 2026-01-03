@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -7,7 +8,8 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      // Ubah state saat scroll lebih dari 20px
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -19,17 +21,11 @@ const Navbar = () => {
     { name: "Proyek", href: "#projects" },
   ];
 
-  // --- FUNGSI BARU: HANDLE SCROLL MANUAL ---
   const handleNavClick = (e, targetId) => {
-    e.preventDefault(); // 1. Matikan fungsi link bawaan (biar gak loncat kasar)
-
-    // 2. Tutup menu mobile (kalau lagi buka)
+    e.preventDefault();
     setIsOpen(false);
-
-    // 3. Cari elemen tujuan dan scroll manual
     const element = document.querySelector(targetId);
     if (element) {
-      // Hitung posisi dengan offset 80px (biar judul gak ketutupan navbar)
       const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
@@ -43,115 +39,152 @@ const Navbar = () => {
     }
   };
 
+  // --- Framer Motion Variants ---
+  const menuVariants = {
+    closed: {
+      opacity: 0,
+      height: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+        when: "afterChildren",
+      },
+    },
+    open: {
+      opacity: 1,
+      height: "100vh",
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+        when: "beforeChildren",
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    closed: { opacity: 0, y: 20 },
+    open: { opacity: 1, y: 0 },
+  };
+
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${
         isScrolled || isOpen
-          ? "bg-surface/95 backdrop-blur-md border-b border-white/10 py-4 shadow-lg"
-          : "bg-transparent py-6 border-transparent"
+          ? "bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md border-gray-200 dark:border-white/5 shadow-sm py-4"
+          : "bg-transparent border-transparent py-6"
       }`}
     >
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        {/* LOGO */}
+      <div className="container mx-auto px-6 max-w-8xl flex justify-between items-center">
         <div
-          className="logo cursor-pointer z-50"
+          className="logo cursor-pointer z-50 flex items-center gap-2"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          <h1 className="text-2xl font-bold text-white tracking-tight hover:text-accent transition-colors">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
             Portfo<span className="text-accent">lio.</span>
           </h1>
         </div>
 
-        {/* --- DESKTOP MENU --- */}
-        <ul className="hidden md:flex items-center gap-8 font-medium text-sm">
+        {/* --- 2. DESKTOP MENU (Modern Pill Style) --- */}
+        <ul className="hidden md:flex items-center gap-2 font-medium text-sm">
           {navLinks.map((item) => (
             <li key={item.name}>
               <a
                 href={item.href}
-                // Pakai handleNavClick juga di desktop biar konsisten (halus + offset pas)
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="relative text-gray-300 hover:text-accent transition-colors duration-300 group"
+                className="px-4 py-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-accent dark:hover:text-accent transition-all duration-300"
               >
                 {item.name}
-                <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
               </a>
             </li>
           ))}
 
+          {/* Separator kecil */}
+          <li className="h-6 w-px bg-gray-300 dark:bg-white/10 mx-2"></li>
+
+          {/* Theme Toggle di Desktop */}
           <li>
+            <ThemeToggle />
+          </li>
+
+          <li className="ml-2">
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, "#contact")}
-              className="px-5 py-2.5 rounded-md border border-accent text-accent hover:bg-accent hover:text-black font-semibold transition-all duration-300 cursor-pointer"
+              className="px-6 py-2.5 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
             >
-              Kontak Saya
+              Contact Me
             </a>
           </li>
         </ul>
 
-        {/* --- MOBILE HAMBURGER BUTTON --- */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-white focus:outline-none z-50 relative"
-        >
-          <svg
-            className="w-8 h-8 text-accent"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* --- 3. MOBILE CONTROLS --- */}
+        <div className="flex items-center gap-4 md:hidden z-50">
+          {/* Toggle Theme Mobile */}
+          <ThemeToggle />
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-gray-900 dark:text-white focus:outline-none p-2 -mr-2"
+            aria-label="Toggle Menu"
           >
-            {isOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
-        </button>
+            <svg
+              className="w-7 h-7 hover:text-accent transition-colors duration-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              {isOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 9h16.5m-16.5 6.75h16.5"
+                />
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
 
-      {/* --- MOBILE MENU OVERLAY --- */}
+      {/* --- 4. MOBILE MENU OVERLAY (Staggered Animation) --- */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "100vh" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden fixed inset-0 bg-surface/98 backdrop-blur-xl z-40 flex flex-col items-center justify-center"
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={menuVariants}
+            className="md:hidden fixed inset-0 bg-white/95 dark:bg-[#0a0a0a]/98 backdrop-blur-xl z-40 flex flex-col items-center justify-center"
           >
-            <ul className="flex flex-col items-center gap-8 font-medium text-2xl">
+            <ul className="flex flex-col items-center gap-6 font-medium text-2xl">
               {navLinks.map((item) => (
-                <li key={item.name}>
+                <motion.li key={item.name} variants={itemVariants}>
                   <a
                     href={item.href}
-                    // 👇 INI KUNCINYA: Pakai fungsi handleNavClick
                     onClick={(e) => handleNavClick(e, item.href)}
-                    className="text-gray-300 hover:text-accent transition-colors"
+                    className="text-gray-800 dark:text-gray-200 hover:text-accent transition-colors"
                   >
                     {item.name}
                   </a>
-                </li>
+                </motion.li>
               ))}
 
-              <li>
+              <motion.li variants={itemVariants} className="mt-4">
                 <a
                   href="#contact"
                   onClick={(e) => handleNavClick(e, "#contact")}
-                  className="inline-block px-8 py-3 rounded-full bg-accent text-black font-bold mt-4 hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all"
+                  className="inline-block px-8 py-3 rounded-full bg-accent text-white font-bold shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] hover:shadow-[0_6px_20px_rgba(16,185,129,0.23)] hover:-translate-y-1 transition-all"
                 >
                   Contact Me
                 </a>
-              </li>
+              </motion.li>
             </ul>
           </motion.div>
         )}

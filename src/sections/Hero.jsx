@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import profileImg from "../assets/hero.png";
+import profileImg from "../assets/hero.png"; // Pastikan path ini benar
 
-// Variabel animasi untuk teks agar muncul berurutan (staggered)
+// --- VARIAN ANIMASI ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -19,26 +19,26 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center relative overflow-hidden py-20 px-6"
+      className="min-h-screen flex items-center relative overflow-hidden py-20 px-6 bg-white dark:bg-[#0a0a0a] transition-colors duration-300"
     >
-      {/* === EFEK BACKGROUND CYBER === */}
-      {/* 1. Orb Cahaya Hijau di pojok kanan atas */}
-      <div className="absolute top-0 right-0 -z-10 w-150 h-150 bg-accent/20 blur-[150px] rounded-full opacity-70 mix-blend-screen"></div>
-      {/* 2. Orb Cahaya kecil di kiri bawah */}
-      <div className="absolute bottom-0 left-0 -z-10 w-75 h-75 bg-accent/10 blur-[100px] rounded-full opacity-50"></div>
+      {/* === EFEK BACKGROUND (Dynamic Light/Dark) === */}
+      {/* 1. Orb Kanan Atas */}
+      <div className="absolute top-0 right-0 -z-10 w-175 h-125 bg-emerald-300/30 dark:bg-emerald-500/20 blur-[120px] rounded-full mix-blend-multiply dark:mix-blend-screen opacity-50 dark:opacity-70"></div>
+      {/* 2. Orb Kiri Bawah */}
+      <div className="absolute bottom-0 left-0 -z-10 w-75 h-75 bg-emerald-200/40 dark:bg-emerald-500/10 blur-[100px] rounded-full mix-blend-multiply dark:mix-blend-screen opacity-50"></div>
 
-      <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+      <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center max-w-8xl">
         {/* === KOLOM KIRI: TEKS === */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="space-y-6 z-10 order-2 md:order-1" // di HP jadi di bawah foto
+          className="space-y-6 z-10 order-2 md:order-1"
         >
-          {/* Greeting bergaya terminal */}
+          {/* Greeting */}
           <motion.p
             variants={itemVariants}
-            className="text-accent font-mono tracking-wider"
+            className="text-emerald-600 dark:text-emerald-400 font-mono tracking-wider font-medium"
           >
             &gt; Halooo, Perkenalkan 👋
           </motion.p>
@@ -46,7 +46,7 @@ const Hero = () => {
           {/* Nama Besar */}
           <motion.h1
             variants={itemVariants}
-            className="text-5xl md:text-7xl font-bold text-white leading-tight tracking-tighter"
+            className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight"
           >
             Muhammad Ahnaf
           </motion.h1>
@@ -54,13 +54,13 @@ const Hero = () => {
           {/* Sub-headline (Role) */}
           <motion.h2
             variants={itemVariants}
-            className="text-3xl md:text-4xl font-semibold text-gray-400"
+            className="text-2xl md:text-4xl font-semibold text-gray-600 dark:text-gray-300"
           >
             Saya seorang{" "}
-            <span className="text-accent relative">
+            <span className="text-emerald-500 relative inline-block">
               Backend Developer
-              {/* Garis bawah cyber */}
-              <span className="absolute -bottom-2 left-0 w-full h-1 bg-accent/50 rounded-full"></span>
+              {/* Dekorasi Garis Bawah */}
+              <span className="absolute -bottom-2 left-0 w-full h-1 bg-emerald-500/40 rounded-full"></span>
             </span>
             .
           </motion.h2>
@@ -68,69 +68,66 @@ const Hero = () => {
           {/* Deskripsi Singkat */}
           <motion.p
             variants={itemVariants}
-            className="max-w-lg text-gray-400 text-lg leading-relaxed pt-4"
+            className="max-w-lg text-gray-600 dark:text-gray-400 text-lg leading-relaxed pt-2"
           >
             Spesialis dalam membangun sistem yang scalable, aman, dan efisien.
             Mengubah kopi menjadi kode backend yang solid di belakang layar.
           </motion.p>
 
           {/* Tombol Aksi */}
-          <motion.div variants={itemVariants} className="flex gap-4 pt-6">
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-wrap gap-4 pt-4"
+          >
             <a
               href="#projects"
-              className="px-8 py-3 bg-accent text-black font-semibold rounded-lg shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_35px_rgba(16,185,129,0.6)] hover:-translate-y-1 transition-all"
+              className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all duration-300"
             >
               Lihat Project
             </a>
             <a
               href="#contact"
-              className="px-8 py-3 border border-white/20 text-white rounded-lg hover:bg-white/10 hover:border-white/40 transition-all"
+              className="px-8 py-3 border border-gray-300 dark:border-white/20 text-gray-700 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300"
             >
               Kontak Saya
             </a>
           </motion.div>
         </motion.div>
 
-        <motion.div
-          // Animasi Masuk (Entrance) tetap ada agar halus
-          initial={{ opacity: 0, scale: 1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "backOut" }}
-          className="relative flex justify-center items-center order-1 md:order-2"
-        >
-          {/* Container Foto (Sekarang menggunakan div biasa, bukan motion.div karena tidak butuh animasi looping) */}
-          <div className="relative w-64 h-64 md:w-80 md:h-80">
-            {/* 1. Efek Glow diam di belakang (dikurangi opacity-nya biar lebih tenang) */}
-            <div className="absolute inset-0 bg-accent/20 rounded-full blur-2xl scale-95"></div>
+        {/* === KOLOM KANAN: FOTO (Floating Animation) === */}
+        <div className="relative flex justify-center items-center order-1 md:order-2">
+          {/* Container Animasi Floating (Naik Turun) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: [0, -20, 0], // Efek melayang (floating)
+            }}
+            transition={{
+              opacity: { duration: 0.8, delay: 0.2 },
+              scale: { duration: 0.8, delay: 0.2 },
+              y: {
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+            }}
+            className="relative"
+          >
+            {/* Lingkaran Glow di belakang foto (ikut float) */}
+            <div className="absolute inset-0 bg-emerald-500/20 dark:bg-emerald-500/30 rounded-full blur-3xl transform scale-90 -z-10"></div>
 
-            {/* 2. Foto Utama */}
-            <div className="relative w-full h-full rounded-full overflow-hidden border-[6px] border-surface shadow-xl">
-              {/* Ganti div pembungkus foto dengan ini */}
-              {/* Ganti div pembungkus foto dengan ini */}
-              <motion.div
-                animate={{ y: [0, -15, 0] }} // Bergerak naik 15px lalu turun lagi
-                transition={{
-                  duration: 6, // Durasi 6 detik (sangat pelan & tenang)
-                  repeat: Infinity, // Ulangi terus menerus
-                  ease: "easeInOut", // Gerakan halus (tidak kaku)
-                }}
-                className="relative w-64 h-64 md:w-80 md:h-80 rounded-full border-[6px] border-surface shadow-xl overflow-hidden"
-              >
-                <img
-                  src={profileImg}
-                  alt="Profile Photo"
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                />
-              </motion.div>
+            {/* Wrapper Foto Lingkaran */}
+            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full border-[6px] border-white dark:border-[#171717] shadow-2xl overflow-hidden">
               <img
                 src={profileImg}
-                alt="Profile Photo"
-                // Hanya ada efek zoom sedikit saat kursor diarahkan (hover)
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-out"
+                alt="Muhammad Ahnaf"
+                className="w-full h-full object-cover hover:scale-110 transition-transform duration-700 ease-in-out"
               />
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

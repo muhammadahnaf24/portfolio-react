@@ -1,25 +1,52 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* 1. AKTIFKAN LOGIKA CLASS DARK MODE */
+@variant dark (&:where(.dark, .dark *));
+
+/* 2. DEFINISIKAN WARNA (VARIABLE) */
+:root {
+  /* --- LIGHT MODE (Default) --- */
+  /* Saya buatkan warna terang yang cocok agar kontras */
+  --color-bg-val: #ffffff;          /* Putih bersih */
+  --color-surface-val: #f3f4f6;     /* Abu-abu sangat muda */
+  --color-text-val: #171717;        /* Hitam (kebalikan dari dark mode) */
+  --color-accent-val: #10b981;      /* Emerald 500 (Tetap) */
+}
+
+.dark {
+  /* --- DARK MODE (Dari kodingan Anda sebelumnya) --- */
+  --color-bg-val: #0a0a0a;          /* Hitam pekat user */
+  --color-surface-val: #171717;     /* Surface gelap user */
+  --color-text-val: #d4d4d4;        /* Teks abu terang user */
+  /* Accent tetap sama, tapi bisa diubah jika ingin beda di dark mode */
+}
+
+/* 3. KONFIGURASI TEMA TAILWIND */
 @theme {
   --font-sans: "Poppins", sans-serif;
 
-
-  /* Background & Surface TETAP (Dark Mode) */
-  --color-background: #0a0a0a; 
-  --color-surface: #171717;    
-  --color-text-main: #d4d4d4;  
-
-  /* GANTI INI: Dari Oren ke Hijau Emerald */
-  --color-accent: #10b981;     /* Emerald 500 */
+  /* Hubungkan nama class Tailwind ke Variable di atas */
+  --color-background: var(--color-bg-val);
+  --color-surface: var(--color-surface-val);
+  --color-text-main: var(--color-text-val);
+  --color-accent: var(--color-accent-val);
 }
 
+/* 4. BASE STYLES */
 @layer base {
   html, body {
     font-family: var(--font-sans);
-    background-color: var(--color-background);
+    
+    /* Gunakan variable tema agar otomatis berubah saat toggle */
+    background-color: var(--color-background); 
     color: var(--color-text-main);
 
+    /* Animasi transisi halus saat ganti mode */
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+    
     scroll-behavior: smooth;
   }
 }
